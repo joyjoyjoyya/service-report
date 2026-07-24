@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>使中聚會狀況蒐集</title>
+  <style>
+    :root {
+      --primary-color: #3b82f6;
+      --primary-hover: #2563eb;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 600px;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 24px;
+      text-align: center;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+
+    label.required::after {
+      content: " *";
+      color: #ef4444;
+    }
+
+    select, textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background-color: #fff;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    select:focus, textarea:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--primary-color);
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: var(--primary-hover);
+    }
+
+    button:disabled {
+      background-color: #94a3b8;
+      cursor: not-allowed;
+    }
+
+    #statusMessage {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      text-align: center;
+      display: none;
+    }
+
+    .status-success {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+
+    .status-error {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>使中聚會狀況蒐集</h1>
+    
+    <form id="reportForm">
+      <div class="form-group">
+        <label for="reporter" class="required">填寫人</label>
+        <select id="reporter" required>
+          <option value="">請選擇填寫人</option>
+          <option value="芷晴">1. 芷晴</option>
+          <option value="鴻鈞">2. 鴻鈞</option>
+          <option value="志豪">3. 志豪</option>
+          <option value="亞涵">4. 亞涵</option>
+          <option value="傳揚">5. 傳揚</option>
+          <option value="千千">6. 千千</option>
+          <option value="守仁">7. 守仁</option>
+          <option value="David">8. David</option>
+          <option value="恩竹">9. 恩竹</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="session" class="required">場次</label>
+        <select id="session" required>
+          <option value="">請選擇場次</option>
+          <option value="週六晚上">1. 週六晚上</option>
+          <option value="週日上午">2. 週日上午</option>
+          <option value="週日下午">3. 週日下午</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="group" class="required">組別</label>
+        <select id="group" required>
+          <option value="">請選擇組別</option>
+          <option value="PA">1. PA</option>
+          <option value="VJ">2. VJ</option>
+          <option value="舞監">3. 舞監</option>
+          <option value="燈光">4. 燈光</option>
+          <option value="影視">5. 影視</option>
+          <option value="流程">6. 流程</option>
+          <option value="其他">7. 其他</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="issue" class="required">狀況描述</label>
+        <textarea id="issue" placeholder="請詳細說明發生的狀況..." required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="solution">當下解決方式</label>
+        <textarea id="solution" placeholder="若有當下處理，請簡述處理方式..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="optimization">未來優化方式</label>
+        <textarea id="optimization" placeholder="對於未來此類狀況的建議或優化方案..."></textarea>
+      </div>
+
+      <button type="submit" id="submitBtn">提交資料</button>
+    </form>
+
+    <div id="statusMessage"></div>
+  </div>
+
+  <script>
+    // ⚠️ 請將下方的網址替換成你在 Google Apps Script 取得的「網頁應用程式 URL」
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/你的_APPS_SCRIPT_ID/exec";
+
+    const form = document.getElementById('reportForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusMessage = document.getElementById('statusMessage');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // 按鈕狀態更改
+      submitBtn.disabled = true;
+      submitBtn.textContent = '傳送中...';
+      statusMessage.style.display = 'none';
+
+      const payload = {
+        reporter: document.getElementById('reporter').value,
+        session: document.getElementById('session').value,
+        group: document.getElementById('group').value,
+        issue: document.getElementById('issue').value,
+        solution: document.getElementById('solution').value,
+        optimization: document.getElementById('optimization').value
+      };
+
+      fetch(GAS_WEB_APP_URL, {
+        method: 'POST',
+        mode: 'no-cors', // 避開跨網域限制
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(() => {
+        showStatus('資料已成功送出！感謝您的填寫。', 'success');
+        form.reset();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showStatus('送出失敗，請檢查網路連線或稍後再試。', 'error');
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '提交資料';
+      });
+    });
+
+    function showStatus(text, type) {
+      statusMessage.textContent = text;
+      statusMessage.className = type === 'success' ? 'status-success' : 'status-error';
+      statusMessage.style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
