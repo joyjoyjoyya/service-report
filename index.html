@@ -193,6 +193,13 @@
         <input type="text" id="reporter" placeholder="請輸入填寫人姓名" required>
       </div>
 
+      <!-- 新增的日期選擇器 -->
+      <div class="form-group">
+        <label for="date" class="required">日期</label>
+        <input type="date" id="date" required>
+      </div>
+
+      
       <div class="form-group">
         <label for="session" class="required">場次</label>
         <select id="session" required>
@@ -261,6 +268,7 @@
 
       const payload = {
         reporter: document.getElementById('reporter').value,
+        date: document.getElementById('date').value, // 新增日期欄位
         session: document.getElementById('session').value,
         group: document.getElementById('group').value,
         issue: document.getElementById('issue').value,
